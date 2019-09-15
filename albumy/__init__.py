@@ -15,12 +15,12 @@ def create_app(config_name=None):
 
     app.config.from_object(config[config_name])
 
+    register_extensions(app)
     register_blueprints(app)
     register_commands(app)
     register_errorhandler(app)
-    register_extensions(app)
     register_shell_context(app)
-    register_template_context(app)
+    register_template_context()
 
     return app
 
