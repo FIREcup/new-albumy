@@ -10,4 +10,4 @@ def index():
 
 @main_bp.route('/explore')
 def explore():
-    return render_template('main/expore.html')
+    return render_template('main/explore.html')
