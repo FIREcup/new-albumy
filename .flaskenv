@@ -1,0 +1,3 @@
+FLASK_APP=albumy
+FLASK_ENV=development
+DEBUG_MODE=1
