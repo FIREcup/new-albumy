@@ -65,7 +65,7 @@ def confirm(token):
 
     if validate_token(user=current_user, token=token, operation=Operations.CONFIRM):
         flash('Account confirmed.', 'success')
-        return redirect(url_for('mian.index'))
+        return redirect(url_for('main.index'))
     else:
         flash('Invalid or expired token', 'warning')
         return redirect(url_for('.resend_confirm_email'))
