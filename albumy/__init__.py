@@ -3,8 +3,10 @@ import click
 from flask import Flask, render_template
 
 from .blueprints.main import main_bp
+from .blueprints.auth import auth_bp
 from .extensions import bootstrap, db, mail, moment
 from .settings import config
+from .models import User
 
 
 def create_app(config_name=None):
@@ -34,12 +36,13 @@ def register_extensions(app):
 
 def register_blueprints(app):
     app.register_blueprint(main_bp)
+    app.register_blueprint(auth_bp)
 
 
 def register_shell_context(app):
     @app.shell_context_processor
     def make_shell_context():
-        return dict(db=db)
+        return dict(db=db, User=User)
 
 
 def register_template_context(app):
@@ -62,6 +65,7 @@ def register_errorhandler(app):
     @app.errorhandler(500)
     def internal_server_error(e):
         return render_template('errors/500.html'), 500
+
 
 def register_commands(app):
     @app.cli.command()
