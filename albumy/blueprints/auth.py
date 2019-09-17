@@ -71,7 +71,7 @@ def confirm(token):
         return redirect(url_for('.resend_confirm_email'))
 
 
-@auth_bp.route('resend-confirm-email')
+@auth_bp.route('/resend-confirm-email')
 @login_required
 def resend_confirm_email():
     if current_user.confirmed:
