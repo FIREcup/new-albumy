@@ -23,6 +23,10 @@ class User(db.Model, UserMixin):
     role = db.relationship('Role', back_populates='users')
     photos = db.relationship('Photo', back_populates='author', cascade='all')
 
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        self.set_role()
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
