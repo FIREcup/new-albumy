@@ -4,6 +4,12 @@ import sys
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
+class Operations:
+    CONFIRM = 'confirm'
+    RESET_PASSWORd = 'reset-password'
+    CHANGE_EMAIL = 'change-email'
+
+
 class BaseConfig:
     ALBUMY_ADMIN_EMAIL = os.getenv('ALBUMY_ADMIN', 'admin@helloflask.com')
     ALBUMY_PHOTO_PER_PAGE = 12
