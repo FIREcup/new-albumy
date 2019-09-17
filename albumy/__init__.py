@@ -72,6 +72,7 @@ def register_commands(app):
     @app.cli.command()
     @click.option('--drop', is_flag=True, help='Create after drop')
     def initdb(drop):
+        """Initialize Database"""
         if drop:
             click.confirm('This operation will delete the database, continue?', abort=True)
             db.drop_all()
@@ -81,6 +82,7 @@ def register_commands(app):
 
     @app.cli.command()
     def init():
+        """Initialize Albumy"""
         click.echo('Initializing the database...')
         db.create_all()
 
@@ -88,4 +90,5 @@ def register_commands(app):
 
     @app.cli.command()
     def forge():
+        """Generate fake data"""
         pass
