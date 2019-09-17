@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(30))
     website = db.Column(db.String(255))
     bio = db.Column(db.String(120))
-    location = db.Column(db.Stirng(50))
+    location = db.Column(db.String(50))
     member_since = db.Column(db.DateTime, defaut=datetime.utcnow, index=True)
 
     confirmed = db.Column(db.Boolean, default=False)
