@@ -4,7 +4,7 @@ from flask import Flask, render_template
 
 from .blueprints.main import main_bp
 from .blueprints.auth import auth_bp
-from .extensions import bootstrap, db, mail, moment
+from .extensions import bootstrap, db, mail, moment, loginmanager
 from .settings import config
 from .models import User
 
@@ -30,6 +30,7 @@ def create_app(config_name=None):
 def register_extensions(app):
     bootstrap.init_app(app)
     db.init_app(app)
+    loginmanager.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
 
