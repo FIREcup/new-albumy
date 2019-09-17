@@ -15,7 +15,7 @@ class LoginForm(FlaskForm):
 
 
 class RegisterForm(FlaskForm):
-    name =StringField('Name', validators=[DataRequired(), Length(1, 30)])
+    name = StringField('Name', validators=[DataRequired(), Length(1, 30)])
     email = StringField('Email', validators=[DataRequired(), Length(1, 254), Email()])
     username = StringField('Username', validators=[DataRequired(), Length(1, 20),
                                                    Regexp('^[a-zA-Z0-9]*$',
@@ -25,7 +25,7 @@ class RegisterForm(FlaskForm):
     submit = SubmitField()
 
     def validate_email(self, field):
-        if User.query.filter_by(email=field.data):
+        if User.query.filter_by(email=field.data).first():
             raise ValidationError('The email is already exist.')
 
     def validate_username(self, field):
