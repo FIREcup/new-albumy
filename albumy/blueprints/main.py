@@ -24,8 +24,9 @@ def explore():
 @main_bp.route('/upload', methods=['GET', 'POST'])
 @login_required
 @confirm_required
-@permission_required('UPLOAD')
+#@permission_required('UPLOAD')
 def upload():
+    print("current_user's role: {}".format(current_user.role))
     if request.method == 'POST' and 'file' in request.files:
         f = request.files.get('file')
         filename = random_filename(f.filename)
