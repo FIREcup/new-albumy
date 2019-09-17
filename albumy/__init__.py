@@ -6,7 +6,7 @@ from .blueprints.main import main_bp
 from .blueprints.auth import auth_bp
 from .extensions import bootstrap, db, mail, moment, login_manager
 from .settings import config
-from .models import User
+from .models import User, Role
 
 
 def create_app(config_name=None):
@@ -85,6 +85,9 @@ def register_commands(app):
         """Initialize Albumy"""
         click.echo('Initializing the database...')
         db.create_all()
+
+        click.echo('Initializing the roels and permissions...')
+        Role.init_role()
 
         click.echo('Done.')
 
