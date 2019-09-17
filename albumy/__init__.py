@@ -4,7 +4,7 @@ from flask import Flask, render_template
 
 from .blueprints.main import main_bp
 from .blueprints.auth import auth_bp
-from .extensions import bootstrap, db, mail, moment, login_manager
+from .extensions import bootstrap, db, mail, moment, login_manager, dropzone, csrf
 from .settings import config
 from .models import User, Role
 
@@ -33,6 +33,8 @@ def register_extensions(app):
     login_manager.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
+    dropzone.init_app(app)
+    csrf.init_app(app)
 
 
 def register_blueprints(app):
@@ -62,6 +64,10 @@ def register_errorhandler(app):
     @app.errorhandler(404)
     def page_not_found(e):
         return render_template('errors/404.html'), 404
+
+    @app.errorhandler(413)
+    def request_entity_too_large(e):
+        return render_template('error/413.html'), 413
 
     @app.errorhandler(500)
     def internal_server_error(e):

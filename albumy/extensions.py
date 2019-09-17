@@ -4,6 +4,8 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_login import AnonymousUserMixin
+from flask_dropzone import Dropzone
+from flask_wtf import CSRFProtect
 
 
 bootstrap = Bootstrap()
@@ -11,6 +13,8 @@ db = SQLAlchemy()
 mail = Mail()
 moment = Moment()
 login_manager = LoginManager()
+dropzone = Dropzone()
+csrf = CSRFProtect()
 
 
 @login_manager.user_loader
