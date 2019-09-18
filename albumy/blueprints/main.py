@@ -5,7 +5,7 @@ from flask_dropzone import random_filename
 
 from ..decorators import permission_required, confirm_required
 from ..extensions import db
-from ..models import Photo
+from ..models import Photo, Role
 
 
 main_bp = Blueprint('main', __name__)
@@ -24,9 +24,10 @@ def explore():
 @main_bp.route('/upload', methods=['GET', 'POST'])
 @login_required
 @confirm_required
-@permission_required('UPLOAD')
+#@permission_required('UPLOAD')
 def upload():
-    print("current_user's role: {}".format(current_user.role))
+    roles = Role.query.all()
+    print('roles: {}'.format(roles))
     if request.method == 'POST' and 'file' in request.files:
         f = request.files.get('file')
         filename = random_filename(f.filename)
