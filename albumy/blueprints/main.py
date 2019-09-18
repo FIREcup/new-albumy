@@ -24,7 +24,7 @@ def explore():
 @main_bp.route('/upload', methods=['GET', 'POST'])
 @login_required
 @confirm_required
-#@permission_required('UPLOAD')
+@permission_required('UPLOAD')
 def upload():
     roles = Role.query.all()
     users = User.query.all()
