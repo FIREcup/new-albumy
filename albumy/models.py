@@ -88,6 +88,7 @@ class Role(db.Model):
                 if permission is None:
                     permission = Permission(name=permission_name)
                     db.session.add(permission)
+        db.session.commit()
 
 
 class Photo(db.Model):
