@@ -5,7 +5,7 @@ from flask_dropzone import random_filename
 
 from ..decorators import permission_required, confirm_required
 from ..extensions import db
-from ..models import Photo, Role
+from ..models import Photo, Role, User
 
 
 main_bp = Blueprint('main', __name__)
@@ -27,6 +27,8 @@ def explore():
 #@permission_required('UPLOAD')
 def upload():
     roles = Role.query.all()
+    users = User.query.all()
+    print('users: {}'.format(users))
     print('roles: {}'.format(roles))
     if request.method == 'POST' and 'file' in request.files:
         f = request.files.get('file')
