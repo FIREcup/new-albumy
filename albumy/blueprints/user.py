@@ -1,6 +1,6 @@
 from flask import render_template, Blueprint, request, current_app
 
-from ..models import User
+from ..models import User, Photo
 
 
 user_bp = Blueprint('user', __name__)
