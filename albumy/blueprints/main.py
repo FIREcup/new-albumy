@@ -6,6 +6,7 @@ from flask_dropzone import random_filename
 from ..decorators import permission_required, confirm_required
 from ..extensions import db
 from ..models import Photo, Role, User
+from ..utils import resize_image
 
 
 main_bp = Blueprint('main', __name__)
@@ -30,9 +31,12 @@ def upload():
         f = request.files.get('file')
         filename = random_filename(f.filename)
         f.save(os.path.join(current_app.config['ALBUMY_UPLOAD_PATH'], filename))
-
+        filename_s = resize_image(f, filename, current_app.config['ALBUMY_PHOTO_SIZE']['small'])
+        filename_m = resize_image(f, filename, current_app.config['ALBUMY_PHOTO_SIZE']['medium'])
         photo = Photo(
             filename=filename,
+            filename_s=filename_s,
+            filename_m=filename_m,
             author=current_user._get_current_object()
         )
 
