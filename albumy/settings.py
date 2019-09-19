@@ -32,6 +32,9 @@ class BaseConfig:
         ALBUMY_PHOTO_SIZE['medium']: '_m'
     }
 
+    AVATARS_SAVE_PATH = os.path.join(ALBUMY_UPLOAD_PATH, 'avatars')
+    AVATARS_SIZE_TUPLE = (30, 100, 200)
+
     SECRET_KEY = os.getenv('SECRET_KEY', 'secret string')
     MAX_CONTENT_LENGTH = 3 * 1024 * 1024  # file size exceed to 3 Mb will return a 413 error response.
 

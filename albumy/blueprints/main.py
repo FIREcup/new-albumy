@@ -1,5 +1,5 @@
 import os
-from flask import render_template, Blueprint, request, current_app
+from flask import render_template, Blueprint, request, current_app, send_from_directory
 from flask_login import current_user, login_required
 from flask_dropzone import random_filename
 
@@ -20,6 +20,16 @@ def index():
 @main_bp.route('/explore')
 def explore():
     return render_template('main/explore.html')
+
+
+@main_bp.route('/avatars/<path:filename>')
+def get_avatar(filename):
+    return send_from_directory(current_app.config['AVATARS_SAVE_PATH'], filename)
+
+
+@main_bp.route('/uploads/<path:filename>')
+def get_image(filename):
+    return send_from_directory(current_app.config['PHOTO_UPLOAD_PATH', filename])
 
 
 @main_bp.route('/upload', methods=['GET', 'POST'])

@@ -5,7 +5,7 @@ from flask import Flask, render_template
 from .blueprints.main import main_bp
 from .blueprints.auth import auth_bp
 from .blueprints.user import user_bp
-from .extensions import bootstrap, db, mail, moment, login_manager, dropzone, csrf
+from .extensions import bootstrap, db, mail, moment, login_manager, dropzone, csrf, avatars
 from .settings import config
 from .models import User, Role
 
@@ -36,6 +36,7 @@ def register_extensions(app):
     moment.init_app(app)
     dropzone.init_app(app)
     csrf.init_app(app)
+    avatars.init_app(app)
 
 
 def register_blueprints(app):
