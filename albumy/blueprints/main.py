@@ -26,10 +26,6 @@ def explore():
 @confirm_required
 @permission_required('UPLOAD')
 def upload():
-    roles = Role.query.all()
-    users = User.query.all()
-    print('users: {}'.format(users))
-    print('roles: {}'.format(roles))
     if request.method == 'POST' and 'file' in request.files:
         f = request.files.get('file')
         filename = random_filename(f.filename)
