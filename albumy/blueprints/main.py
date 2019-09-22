@@ -5,7 +5,7 @@ from flask_dropzone import random_filename
 
 from ..decorators import permission_required, confirm_required
 from ..extensions import db
-from ..models import Photo, Role, User, Tag
+from ..models import Photo, Role, User, Tag, Comment
 from ..utils import resize_image, flash_errors
 from ..forms.main import DescriptionForm, TagForm
 
@@ -116,7 +116,7 @@ def edit_description(photo_id):
     return redirect(url_for('.show_photo', photo_id=photo_id))
 
 
-@main_bp.route('/photo/<int:photo_id/tag/new', methods=['POST'])
+@main_bp.route('/photo/<int:photo_id>/tag/new', methods=['POST'])
 @login_required
 def new_tag(photo_id):
     photo = Photo.query.get_or_404(photo_id)
