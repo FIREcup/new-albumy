@@ -64,10 +64,11 @@ def show_photo(photo_id):
     pagination = Comment.query.with_parent(photo).order_by(Comment.timestamp.desc()).paginate(page, per_page)
     description_form = DescriptionForm()
     tag_form = TagForm()
+    comment_form = CommentForm()
     comments = pagination.items
 
     description_form.description.data = photo.description
-    return render_template('main/photo.html', photo=photo, description_form=description_form,
+    return render_template('main/photo.html', photo=photo, comment_form=comment_form,
                            description_formd=description_form, tag_form=tag_form,
                            pagination=pagination, comments=comments)
 
