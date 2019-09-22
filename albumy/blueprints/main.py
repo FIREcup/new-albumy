@@ -69,7 +69,7 @@ def show_photo(photo_id):
 
     description_form.description.data = photo.description
     return render_template('main/photo.html', photo=photo, comment_form=comment_form,
-                           description_formd=description_form, tag_form=tag_form,
+                           description_form=description_form, tag_form=tag_form,
                            pagination=pagination, comments=comments)
 
 
@@ -111,14 +111,14 @@ def edit_description(photo_id):
     if current_user != photo.author:
         abort(403)
 
-    description_form = DescriptionForm()
-    if description_form.validate_on_submit():
-        photo.description = description_form.description.data
+    form = DescriptionForm()
+    if form.validate_on_submit():
+        photo.description = form.description.data
         db.session.commit()
         flash('Description updated', 'success')
 
-    flash_errors(description_form)
-    return redirect(url_for('.show_photo', photo_id=photo_id, description_form=description_form))
+    flash_errors(form)
+    return redirect(url_for('.show_photo', photo_id=photo_id))
 
 
 @main_bp.route('/photo/<int:photo_id>/tag/new', methods=['POST'])

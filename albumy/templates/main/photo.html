@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% from 'bootstrap/pagination.html' import render_pagination %}
-{% from 'bootstrap/form.html' import render_form %}
+{% from 'bootstrap/form.html' import render_form, render_field with context %}
 
 
 {% block title %}{{ photo.author.name }}{% endblock %}

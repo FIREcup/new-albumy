@@ -42,7 +42,7 @@
 <div id="description-form">
     <form action="{{ url_for('.edit_description', photo_id=photo.id) }}" method="post">
         {{ description_form.csrf_token }}
-        {{ render_filed(description_form.description) }}
+        {{ render_field(description_form.description) }}
         <a class="btn btn-light btn-sm" id="cancel-description">Cancel</a>
         {{ render_field(description_form.submit, class='btn btn-success btn-sm') }}
     </form>
