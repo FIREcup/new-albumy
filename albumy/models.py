@@ -1,3 +1,4 @@
+import os
 from flask import current_app
 from datetime import datetime
 from flask_login import UserMixin
@@ -69,6 +70,12 @@ roles_permissions = db.Table('roles_permissions',
                              )
 
 
+tags_photos = db.Table('tags_photos',
+                       db.Column('tag_id', db.Integer, db.ForeignKey('tag.id')),
+                       db.Column('photo_id', db.Integer, db.ForeignKey('photo.id'))
+                       )
+
+
 class Permission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), unique=True)
@@ -113,5 +120,41 @@ class Photo(db.Model):
     filename_m = db.Column(db.String(64))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    flag = db.Column(db.Integer, default=0)
+    can_comment = db.Column(db.Boolean, default=True)
 
     author = db.relationship('User', back_populates='photos')
+    comments = db.relationship('Comment', back_populates='photo', cascade='all')
+    tags = db.relationship('Tag', secondary=tags_photos, back_populates='photos')
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow, index=True)
+    flag = db.Column(db.Integer, default=0)
+
+    replied_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    photo_id = db.Column(db.Integer, db.ForeignKey('photo.id'))
+
+    photo = db.relationship('Photo', back_populates='comments')
+    author = db.relationship('User', back_populates='comments')
+    replies = db.relationship('Comment', back_populates='replied', cascade='all')
+    replied = db.relationship('Comment', back_populates='replies', remote_side=[id])
+
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True, unique=True)
+
+    photos = db.relationship('Photo', secondary=tags_photos, back_populates='tags')
+
+
+@db.event.listens_for(Photo, 'after_delete', named=True)
+def delete_photos(**kwargs):
+    target = kwargs['target']
+    for filename in [target.filename, target.filename_s, target.filename_m]:
+        path = os.path.join(current_app.config['ALBUMY_UPLOAD_PATH', filename])
+        if os.path.exists(path):
+            os.remove(path)

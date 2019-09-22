@@ -24,7 +24,7 @@
                 <img src="{{ url_for('static', filename='favicon.ico') }}" alt="Albumy">
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-                    aria-controls="navbarColor01" aria-expanded="false" aira-label="Toggle navigation">
+                    aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
@@ -46,7 +46,7 @@
                             <span class="oi oi-cloud-upload"></span>&nbsp;&nbsp;
                         </a>
                         <div class="dropdown nav-item">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" rolw="button"
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-expanded="false">
                                 {{ current_user.name }}<span class="caret"></span>
                             </a>
@@ -93,6 +93,7 @@
         {% endblock %}
     </div>
 </main>
+<div id="toast"></div>
 
 {% block scripts %}
     <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>

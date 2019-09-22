@@ -95,7 +95,7 @@ def register_commands(app):
         click.echo('Initializing the database...')
         db.create_all()
 
-        click.echo('Initializing the roels and permissions...')
+        click.echo('Initializing the roles and permissions...')
         Role.init_role()
 
         click.echo('Done.')
