@@ -217,3 +217,37 @@ def new_comment(photo_id):
 
     flash_errors(form)
     return redirect(url_for('.show_photo', photo_id=photo_id, page=page))
+
+
+@main_bp.route('/photo/p/<int:photo_id>')
+def photo_previous(photo_id):
+    photo = Photo.query.get_or_404(photo_id)
+    photo_p = Photo.query.with_parent(photo.author).filter(Photo.id > photo.id).order_by(Photo.id.asc()).first()
+
+    if photo_p is None:
+        flash('This is already the first one.', 'info')
+        return redirect(url_for('.show_photo', photo_id=photo_id))
+    return redirect(url_for('.show_photo', photo_id=photo_p.id))
+
+
+@main_bp.route('/photo/n/<int:photo_id>')
+def photo_next(photo_id):
+    photo = Photo.query.get_or_404(photo_id)
+    photo_n = Photo.query.with_parent(photo.author).filter(Photo.id > photo.id).order_by(Photo.id.asc()).first()
+
+    if photo_n is None:
+        flash('This is already the last one', 'info')
+        return redirect(url_for('.show_photo', photo_id=photo_id))
+    return redirect(url_for('.show_photo', photo_id=photo_n.id))
+
+
+@main_bp.route('/report/comment/<int:comment_id>', methods=['POST'])
+@login_required
+@confirm_required
+def report_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    comment.flag += 1
+    db.session.commit()
+    flash('Comment reported', 'info')
+    return redirect(url_for('.show_photo', photo_id=comment.photo_id))
+
