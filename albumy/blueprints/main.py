@@ -111,14 +111,14 @@ def edit_description(photo_id):
     if current_user != photo.author:
         abort(403)
 
-    descriptionform = DescriptionForm()
-    if descriptionform.validate_on_submit():
-        photo.description = descriptionform.description.data
+    description_form = DescriptionForm()
+    if description_form.validate_on_submit():
+        photo.description = description_form.description.data
         db.session.commit()
         flash('Description updated', 'success')
 
-    flash_errors(descriptionform)
-    return redirect(url_for('.show_photo', photo_id=photo_id, descriptionform=descriptionform))
+    flash_errors(description_form)
+    return redirect(url_for('.show_photo', photo_id=photo_id, description_form=description_form))
 
 
 @main_bp.route('/photo/<int:photo_id>/tag/new', methods=['POST'])
