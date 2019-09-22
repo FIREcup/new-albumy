@@ -105,7 +105,7 @@
                     </div>
                     <div class="comment-form" id="comment-form">
                         {{ render_form(comment_form, action=url_for('.new_comment', photo_id=photo.id, page=pagination.pages),
-                                       extra_classes='text'light') }}
+                                       extra_classes='text-right') }}
                     </div>
                 </div>
             {% else %}
