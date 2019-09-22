@@ -11,3 +11,8 @@ class DescriptionForm(FlaskForm):
 class TagForm(FlaskForm):
     tag = StringField('Add tag (use space to separate)', validators=[Optional(), Length(0, 64)])
     submit = SubmitField()
+
+
+class CommentForm(FlaskForm):
+    body = TextAreaField('', validators=[DataRequired()])
+    submit = SubmitField()

@@ -7,7 +7,7 @@ from ..decorators import permission_required, confirm_required
 from ..extensions import db
 from ..models import Photo, Role, User, Tag, Comment
 from ..utils import resize_image, flash_errors
-from ..forms.main import DescriptionForm, TagForm
+from ..forms.main import DescriptionForm, TagForm, CommentForm
 
 
 main_bp = Blueprint('main', __name__)
@@ -193,3 +193,26 @@ def set_comment(photo_id):
         flash('Comment enabled', 'info')
     db.session.commit()
     return redirect(url_for('.show_photo', photo_id=photo_id))
+
+
+@main_bp.route('/photo/<int:photo_id>/comment/new', methods=['POST'])
+@login_required
+@permission_required('COMMENT')
+def new_comment(photo_id):
+    photo = Photo.query.get_or_404(photo_id)
+    page = request.args.get('page', 1, type=int)
+    form = CommentForm()
+    if form.validate_on_submit():
+        body = form.body.data
+        author = current_user._get_current_object()
+        comment = Comment(body=body, author=author, photo=photo)
+
+        replied_id = request.args.get('reply')
+        if replied_id:
+            comment.replied = Comment.query.get_or_404(replied_id)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Comment published', 'success')
+
+    flash_errors(form)
+    return redirect(url_for('.show_photo', photo_id=photo_id, page=page))
