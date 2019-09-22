@@ -30,7 +30,7 @@ def get_avatar(filename):
 
 @main_bp.route('/uploads/<path:filename>')
 def get_image(filename):
-    return send_from_directory(current_app.config['PHOTO_UPLOAD_PATH', filename])
+    return send_from_directory(current_app.config['PHOTO_UPLOAD_PATH'], filename)
 
 
 @main_bp.route('/upload', methods=['GET', 'POST'])
