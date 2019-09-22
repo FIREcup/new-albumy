@@ -63,9 +63,13 @@ def show_photo(photo_id):
     per_page = current_app.config['ALBUMY_COMMENT_PER_PAGE']
     pagination = Comment.query.with_parent(photo).order_by(Comment.timestamp.desc()).paginate(page, per_page)
     description_form = DescriptionForm()
+    tag_form = TagForm()
+    comments = pagination.items
 
     description_form.description.data = photo.description
-    return render_template('main/photo.html', photo=photo, description_form=description_form)
+    return render_template('main/photo.html', photo=photo, description_form=description_form,
+                           description_formd=description_form, tag_form=tag_form,
+                           pagination=pagination, comments=comments)
 
 
 @main_bp.route('/delete/photo/<int:photo_id>', methods=['POST'])
