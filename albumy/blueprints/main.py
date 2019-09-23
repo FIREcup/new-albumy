@@ -256,7 +256,7 @@ def report_comment(comment_id):
 @login_required
 @confirm_required
 def delete_comment(comment_id):
-    comment = Comment.queyr.get_or_404(comment_id)
+    comment = Comment.query.get_or_404(comment_id)
     user = comment.photo.author
     if current_user != comment.author and current_user != user:
         abort(403)
