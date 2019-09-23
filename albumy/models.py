@@ -156,6 +156,6 @@ class Tag(db.Model):
 def delete_photos(**kwargs):
     target = kwargs['target']
     for filename in [target.filename, target.filename_s, target.filename_m]:
-        path = os.path.join(current_app.config['ALBUMY_UPLOAD_PATH', filename])
+        path = os.path.join(current_app.config['ALBUMY_UPLOAD_PATH'], filename)
         if os.path.exists(path):
             os.remove(path)

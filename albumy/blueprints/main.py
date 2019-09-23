@@ -61,7 +61,7 @@ def show_photo(photo_id):
     photo = Photo.query.get_or_404(photo_id)
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['ALBUMY_COMMENT_PER_PAGE']
-    pagination = Comment.query.with_parent(photo).order_by(Comment.timestamp.desc()).paginate(page, per_page)
+    pagination = Comment.query.with_parent(photo).order_by(Comment.timestamp.desc()).paginate(page, per_page, error_out=False)
     description_form = DescriptionForm()
     tag_form = TagForm()
     comment_form = CommentForm()
@@ -202,6 +202,7 @@ def set_comment(photo_id):
 def new_comment(photo_id):
     photo = Photo.query.get_or_404(photo_id)
     page = request.args.get('page', 1, type=int)
+    print('page: {}'.format(page))
     form = CommentForm()
     if form.validate_on_submit():
         body = form.body.data
@@ -261,6 +262,7 @@ def delete_comment(comment_id):
     if current_user != comment.author and current_user != user:
         abort(403)
 
+    db.session.delete(comment)
     db.session.commit()
     flash('Comment deleted!', 'success')
     return redirect(url_for('.show_photo', photo_id=comment.photo_id))
