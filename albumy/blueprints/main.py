@@ -251,3 +251,18 @@ def report_comment(comment_id):
     flash('Comment reported', 'info')
     return redirect(url_for('.show_photo', photo_id=comment.photo_id))
 
+
+@main_bp.route('/delete/comment/<int:comment_id>', methods=['POST'])
+@login_required
+@confirm_required
+def delete_comment(comment_id):
+    comment = Comment.queyr.get_or_404(comment_id)
+    user = comment.photo.author
+    if current_user != comment.author and current_user != user:
+        abort(403)
+
+    db.session.commit()
+    flash('Comment deleted!', 'success')
+    return redirect(url_for('.show_photo', photo_id=comment.photo_id))
+
+
