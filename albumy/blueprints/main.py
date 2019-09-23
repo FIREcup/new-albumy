@@ -25,7 +25,6 @@ def explore():
 
 @main_bp.route('/avatars/<path:filename>')
 def get_avatar(filename):
-    print('filename: {}'.format(filename))
     return send_from_directory(current_app.config['AVATARS_SAVE_PATH'], filename)
 
 
