@@ -56,7 +56,7 @@ $(function () {
         }
     }
 
-    $('.profile_popover').hover(show_profile_popover.bind(this), hide_profile_over.bind(this));
+    $('.profile-popover').hover(show_profile_popover.bind(this), hide_profile_over.bind(this));
 
     $('#confirm-delete').on('show.bs.modal', function(e) {
         $('.delete-form').attr('action', $(e.relatedTarget).data('href'));
