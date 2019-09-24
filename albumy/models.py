@@ -28,6 +28,7 @@ class User(db.Model, UserMixin):
     role = db.relationship('Role', back_populates='users')
     photos = db.relationship('Photo', back_populates='author', cascade='all')
     comments = db.relationship('Comment', back_populates='author', cascade='all')
+    collections = db.relationship('Collect', back_populates='collector', cascade='all')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -159,3 +160,18 @@ def delete_photos(**kwargs):
         path = os.path.join(current_app.config['ALBUMY_UPLOAD_PATH'], filename)
         if os.path.exists(path):
             os.remove(path)
+
+
+class Collect(db.Model):
+    collector_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    collected_id = db.Column(db.Integer, db.ForeignKey('photo.id'), primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    collector = db.relationship('User', back_populates='collections', lazy='joined')
+    collected = db.relationship('Photo', back_populates='collectors', lazy='joined')
+
+
+class Like(db.Model):
+    liker_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    liked_id = db.Column(db.Integer, db.ForeignKey('photo.id'), primary_key=True)
+
