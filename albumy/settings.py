@@ -47,7 +47,6 @@ class BaseConfig:
     MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = ('yangtao', MAIL_USERNAME)
 
-
     DROPZONE_ALLOWED_FILE_TYPE = 'image'
     DROPZONE_MAX_FILE_SIZE = 3
     DROPZONE_MAX_FILES = 30
@@ -55,7 +54,7 @@ class BaseConfig:
 
 
 class DevelopmentConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = 'sqlite:////' + os.path.join(basedir, 'data-dev.db')
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://python:123@localhost:3306/albumy'
     REIDS_URL = 'redis://localhost'
 
 
