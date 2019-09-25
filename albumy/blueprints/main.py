@@ -8,6 +8,7 @@ from ..extensions import db
 from ..models import Photo, Role, User, Tag, Comment, Collect
 from ..utils import resize_image, flash_errors
 from ..forms.main import DescriptionForm, TagForm, CommentForm
+from sqlalchemy.sql.expression import func
 
 
 main_bp = Blueprint('main', __name__)
@@ -20,7 +21,8 @@ def index():
 
 @main_bp.route('/explore')
 def explore():
-    return render_template('main/explore.html')
+    photos = Photo.query.order_by(func.random()).limit(12)
+    return render_template('main/explore.html', photos=photos)
 
 
 @main_bp.route('/avatars/<path:filename>')
