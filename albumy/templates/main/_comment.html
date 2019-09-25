@@ -6,7 +6,6 @@
         {% if current_user == photo.author %}
             <button class="btn btn-xs btn-link float-right"
                data-href="{{ url_for('.set_comment', photo_id=photo.id) }}"
-               href="#!"
                id="set-comment">
                 {% if photo.can_comment %}Disable{% else %}Enable{% endif %} comment
             </button>
