@@ -65,6 +65,21 @@ class User(db.Model, UserMixin):
         permission = Permission.query.filter_by(name=permission).first()
         return permission is not None and self.role is not None and permission in self.role.permissions
 
+    def collect(self, photo):
+        if not self.is_collecting(photo):
+            collect = Collect(collector=self, collected=photo)
+            db.session.add(collect)
+            db.session.commit()
+
+    def uncollect(self, photo):
+        if self.is_collecting(photo):
+            collect = Collect.query.with_parent(self).filter_by(collected_id=photo.id).first()
+            db.session.delete(collect)
+            db.session.commit()
+
+    def is_collecting(self, photo):
+        return Collect.query.with_parent(self).filter_by(collected_id=photo.id).first() is not None
+
 
 roles_permissions = db.Table('roles_permissions',
                              db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
@@ -128,6 +143,7 @@ class Photo(db.Model):
     author = db.relationship('User', back_populates='photos')
     comments = db.relationship('Comment', back_populates='photo', cascade='all')
     tags = db.relationship('Tag', secondary=tags_photos, back_populates='photos')
+    collectors = db.relationship('Collect', back_populates='collected')
 
 
 class Comment(db.Model):
@@ -169,9 +185,4 @@ class Collect(db.Model):
 
     collector = db.relationship('User', back_populates='collections', lazy='joined')
     collected = db.relationship('Photo', back_populates='collectors', lazy='joined')
-
-
-class Like(db.Model):
-    liker_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    liked_id = db.Column(db.Integer, db.ForeignKey('photo.id'), primary_key=True)
 
