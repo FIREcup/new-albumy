@@ -62,6 +62,14 @@ $(function () {
         $('.delete-form').attr('action', $(e.relatedTarget).data('href'));
     });
 
+    $('#set-comment').on('click', function(e) {
+        $el = $(e.target)
+        $.ajax({
+            type: 'POST',
+            url: $el.data('href')
+        });
+    });
+
     $('#description-btn').click(function() {
         $('#description').hide();
         $('#description-form').show();
