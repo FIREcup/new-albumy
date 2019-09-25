@@ -307,3 +307,12 @@ def show_collectors(photo_id):
     pagination = Collect.query.with_parent(photo).order_by(Collect.timestamp.asc()).paginate(page, per_page)
     collects = pagination.items
     return render_template('main/collectors.html', collects=collects, photo=photo, pagination=pagination)
+
+
+@main_bp.route('/reply/comment/<int:comment_id>')
+@login_required
+@permission_required('COMMENT')
+def reply_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    return redirect(url_for('.show_photo', photo_id=comment.photo_id, reply=comment_id,
+                            author=comment.author.name) + '#comment-form')
