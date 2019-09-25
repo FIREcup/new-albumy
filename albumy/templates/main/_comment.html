@@ -4,12 +4,12 @@
             <a href="{{ url_for('.show_photo', photo_id=photo.id, page=pagination.pages or 1) }}#comment-form">latest</a>
         </small>
         {% if current_user == photo.author %}
-            <btn class="btn btn-xs btn-link float-right"
+            <button class="btn btn-xs btn-link float-right"
                data-href="{{ url_for('.set_comment', photo_id=photo.id) }}"
                href="#!"
                id="set-comment">
                 {% if photo.can_comment %}Disable{% else %}Enable{% endif %} comment
-            </btn>
+            </button>
         {% endif %}
     </h3>
     <hr>
