@@ -5,7 +5,7 @@ from flask_dropzone import random_filename
 
 from ..decorators import permission_required, confirm_required
 from ..extensions import db
-from ..models import Photo, Role, User, Tag, Comment
+from ..models import Photo, Role, User, Tag, Comment, Collect
 from ..utils import resize_image, flash_errors
 from ..forms.main import DescriptionForm, TagForm, CommentForm
 
@@ -296,3 +296,12 @@ def uncollect_photo(photo_id):
     flash('Photo uncollected.', 'info')
     return redirect(url_for('.show_photo', photo_id=photo_id))
 
+
+@main_bp.route('/show/collectors/<int:photo_id>')
+def show_collectors(photo_id):
+    photo = Photo.query.get_or_404(photo_id)
+    page = request.args.get('page', 1, type=int)
+    per_page = current_app.config['ALBUMY_USER_PER_PAGE']
+    pagination = Collect.query.with_parent(photo).order_by(Collect.timestamp.asc()).paginate(page, per_page)
+    collects = pagination.items
+    return render_template('main/collectors.html', collects=collects, photo=photo, pagination=pagination)
