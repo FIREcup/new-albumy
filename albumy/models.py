@@ -39,7 +39,7 @@ class User(db.Model, UserMixin):
     comments = db.relationship('Comment', back_populates='author', cascade='all')
     collections = db.relationship('Collect', back_populates='collector', cascade='all')
     following = db.relationship('Follow', foreign_keys=[Follow.follower_id],
-                                back_populates='followers', lazy='dynamic', cascade='all')
+                                back_populates='follower', lazy='dynamic', cascade='all')
     followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
                                 back_populates='followed', lazy='dynamic', cascade='all')
 
