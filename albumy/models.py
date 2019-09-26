@@ -7,6 +7,15 @@ from flask_avatars import Identicon
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+class Follow(db.Model):
+    follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    followed_id = db.Column(db.Integer, db.Foreignkey('user.id'), primary_key=True)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    follower = db.relationship('User', foreign_keys=[follower_id], back_populates='following', lazy='joined')
+    followed = db.relationship('User', foreign_keys=[followed_id], back_populates='followers', lazy='joined')
+
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, index=True)
@@ -29,6 +38,10 @@ class User(db.Model, UserMixin):
     photos = db.relationship('Photo', back_populates='author', cascade='all')
     comments = db.relationship('Comment', back_populates='author', cascade='all')
     collections = db.relationship('Collect', back_populates='collector', cascade='all')
+    following = db.relationship('Follow', foreign_keys=[Follow.follower_id],
+                                back_populates='followers', lazy='dynamic', cascade='all')
+    followers = db.relationship('Follow', foriegn_keys=[Follow.followed_id],
+                                back_populates='followed', lazy='dynamic', cascade='all')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -79,6 +92,26 @@ class User(db.Model, UserMixin):
 
     def is_collecting(self, photo):
         return Collect.query.with_parent(self).filter_by(collected_id=photo.id).first() is not None
+
+    def follow(self, user):
+        if not self.is_following(user):
+            follow = Follow(follower=self, followed=user)
+            db.session.add(follow)
+            db.session.commit()
+
+    def unfollow(self, user):
+        follow = self.following.filter_by(followed_id=user.id).first()
+        if follow:
+            db.session.delete(follow)
+            db.session.commit()
+
+    def is_following(self, user):
+        if user.id is None:
+            return False
+        return self.following.filter_by(followed_id=user.id) is not None
+
+    def is_followed_by(self, user):
+        return self.followers.filter_by(follower_id=user.id) is not None
 
 
 roles_permissions = db.Table('roles_permissions',
@@ -185,4 +218,7 @@ class Collect(db.Model):
 
     collector = db.relationship('User', back_populates='collections', lazy='joined')
     collected = db.relationship('Photo', back_populates='collectors', lazy='joined')
+
+
+
 
