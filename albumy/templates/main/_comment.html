@@ -6,8 +6,8 @@
         {% if current_user == photo.author %}
             <a class="btn btn-xs btn-link float-right"
                href="{{ url_for('.set_comment', photo_id=photo.id) }}"
-               data-href="{{ url_for('.set_comment', photo_id=photo.id) }}"
-                id="set-comment">
+               data-href="https://www.baidu.com"
+               id="set-comment">
                 {% if photo.can_comment %}Disable{% else %}Enable{% endif %} comment
             </a>
         {% endif %}
