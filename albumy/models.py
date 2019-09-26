@@ -9,7 +9,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class Follow(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    followed_id = db.Column(db.Integer, db.Foreignkey('user.id'), primary_key=True)
+    followed_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     follower = db.relationship('User', foreign_keys=[follower_id], back_populates='following', lazy='joined')
