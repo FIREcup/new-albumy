@@ -20,7 +20,7 @@ def send_mail(to, subject, template, **kwargs):
 
 
 def send_confirm_email(user, token, to=None):
-    send_mail(subject='Nice to meet you', to=to or user.email, template='emails/confirm', user=user, token=token)
+    send_mail(subject='Albumy confirm', to=to or user.email, template='emails/confirm', user=user, token=token)
 
 
 def send_reset_password_email(user, token):
