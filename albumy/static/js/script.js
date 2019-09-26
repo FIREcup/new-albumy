@@ -64,7 +64,7 @@ $(function () {
 
     $('#set-comment').on('click', function(e) {
         e.preventDefault();
-        $el = $(e.target)
+        $el = $(e.target);
         $.ajax({
             type: 'POST',
             url: $el.data('href')
