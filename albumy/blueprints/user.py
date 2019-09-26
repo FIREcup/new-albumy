@@ -16,12 +16,12 @@ def index(username):
     return render_template('user/index.html', user=user, photos=photos, pagination=pagination)
 
 
-@user_bp.route('/show/collections/<int:user_id>')
-def show_collections(user_id):
-    user = User.query.get_or_404(user_id)
+@user_bp.route('/<username>/collections')
+def show_collections(username):
+    user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
     per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
-    pagination = Collect.query.with_parent('user').order_by(Collect.timestamp.asc()).paginate(page, per_page)
+    pagination = Collect.query.with_parent(user).order_by(Collect.timestamp.asc()).paginate(page, per_page)
     collects = pagination.items
     return render_template('user/collections.html', user=user, pagination=pagination, collects=collects)
 
