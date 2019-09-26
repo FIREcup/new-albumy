@@ -40,7 +40,7 @@ class User(db.Model, UserMixin):
     collections = db.relationship('Collect', back_populates='collector', cascade='all')
     following = db.relationship('Follow', foreign_keys=[Follow.follower_id],
                                 back_populates='followers', lazy='dynamic', cascade='all')
-    followers = db.relationship('Follow', foriegn_keys=[Follow.followed_id],
+    followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
                                 back_populates='followed', lazy='dynamic', cascade='all')
 
     def __init__(self, **kwargs):
