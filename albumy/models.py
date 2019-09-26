@@ -45,6 +45,7 @@ class User(db.Model, UserMixin):
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
+        self.follow(self)
         self.set_role()
         self.generate_avatar()
 
