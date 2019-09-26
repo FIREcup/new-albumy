@@ -10,7 +10,7 @@
             </a>
         {% endif %}
     </h3>
-    <form id="myform" method="post" action="{{ url_for('.set-comment', photo_id=photo.id) }}"></form>
+    <form id="myform" method="post" action="{{ url_for('.set_comment', photo_id=photo.id) }}"></form>
     <hr>
     {% if comments %}
         {% for comment in comments %}
