@@ -3,14 +3,15 @@
         <small>
             <a href="{{ url_for('.show_photo', photo_id=photo.id, page=pagination.pages or 1) }}#comment-form">latest</a>
         </small>
+        {% if current_user == photo.author %}
+            <a class="btn btn-xs btn-link float-right"
+               href="{{ url_for('.set_comment', photo_id=photo.id) }}"
+               data-href="{{ url_for('.set_comment', photo_id=photo.id) }}"
+                id="set-comment">
+                {% if photo.can_comment %}Disable{% else %}Enable{% endif %} comment
+            </a>
+        {% endif %}
     </h3>
-    <form class="inline float-right" method="post"
-          action="{{ url_for('.set_comment', photo_id=photo.id) }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <button type="submit" class="btn btn-link btn-sm">
-            {% if photo.can_comment %}Disable{% else %}Enable{% endif %} comment
-        </button>
-     </form>
     <hr>
     {% if comments %}
         {% for comment in comments %}

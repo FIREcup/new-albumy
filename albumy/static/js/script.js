@@ -62,7 +62,8 @@ $(function () {
         $('.delete-form').attr('action', $(e.relatedTarget).data('href'));
     });
 
-    $('#set-comment').click( function(e) {
+    $('#set-comment').on('click', function(e) {
+        e.preventDefault();
         $el = $(e.target)
         $.ajax({
             type: 'POST',
