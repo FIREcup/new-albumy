@@ -109,10 +109,11 @@ class User(db.Model, UserMixin):
     def is_following(self, user):
         if user.id is None:
             return False
-        return self.following.filter_by(followed_id=user.id) is not None
+        print('result: {}'.format(self.following.filter_by(followed_id=user.id).first()))
+        return self.following.filter_by(followed_id=user.id).first() is not None
 
     def is_followed_by(self, user):
-        return self.followers.filter_by(follower_id=user.id) is not None
+        return self.followers.filter_by(follower_id=user.id).first() is not None
 
 
 roles_permissions = db.Table('roles_permissions',
