@@ -39,9 +39,9 @@ $(function () {
         clearTimeout(flash);
         var $toast = $('#toast');
         if (category === 'error') {
-            $toast.css('background-color': 'red')
+            $toast.css('background-color', 'red');
         } else {
-            $toast.css('background-color': '#333')
+            $toast.css('background-color', '#333');
         }
         $toast.text(body).fadeIn();
         flash = setTimeout(function() {
