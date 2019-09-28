@@ -24,8 +24,8 @@
                 {{ user.followers.count() - 1 }}
             </strong> Followers
         </a>
-    </p>
-    <a href="{{ url_for('user.index', username=user.username) }}" class="btn btn-light btn-sm">Homepage</a>
+    </p> }}" class=
+    <a href="{{ url_for('user.index', username=user.username)"btn btn-light btn-sm">Homepage</a>
     {% if current_user.is_authenticated %}
         {% if user != current_user %}
             <button data-id="{{ user.id }}"

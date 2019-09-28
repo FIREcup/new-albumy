@@ -105,7 +105,7 @@
     {{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script type='text/javascript'>
-        var csrf_tokne = "{{ csrf_token() }}";
+        var csrf_token = "{{ csrf_token() }}";
     </script>
 {% endblock %}
 </body>
