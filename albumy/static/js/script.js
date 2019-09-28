@@ -115,7 +115,9 @@ $(function () {
                 $el.prev().show();
                 $el.hide();
                 update_followers_count(id);
-                toast(data.message);
+                if (request.responseJSON && request.responseJSON.hasOwnProperty('message')) {
+                    toast(data.message);
+                }
             }
         });
     }
@@ -131,7 +133,9 @@ $(function () {
                 $el.next().show();
                 $el.hide();
                 update_followers_count(id);
-                toast(data.message);
+                if (request.responseJSON && request.responseJSON.hasOwnProperty('message')) {
+                    toast(data.message);
+                }
             }
         });
     }
