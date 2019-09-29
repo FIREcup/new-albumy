@@ -42,6 +42,7 @@ class User(db.Model, UserMixin):
                                 back_populates='follower', lazy='dynamic', cascade='all')
     followers = db.relationship('Follow', foreign_keys=[Follow.followed_id],
                                 back_populates='followed', lazy='dynamic', cascade='all')
+    notifications = db.relationship('Notification', back_populates='receiver', cascade='all')
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -221,5 +222,11 @@ class Collect(db.Model):
     collected = db.relationship('Photo', back_populates='collectors', lazy='joined')
 
 
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    message = db.Column(db.Text, nullable=False)
+    is_read = db.Column(db.Boolean, default=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
-
+    receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    receiver = db.relationship('User', back_populates='notifications')

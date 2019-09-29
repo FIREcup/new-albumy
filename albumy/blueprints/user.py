@@ -4,6 +4,7 @@ from ..decorators import permission_required
 from flask_login import current_user
 from ..extensions import db
 from ..utils import redirect_back
+from ..notifications import push_follow_notification
 
 from ..models import User, Photo, Collect, Follow
 
@@ -40,6 +41,7 @@ def follow(username):
         flash('Already followed.', 'info')
         return redirect(url_for('.index', username=username))
     current_user.follow(user)
+    push_follow_notification(follower=current_user, receiver=user)
     flash('Followed successfully.', 'success')
     return redirect_back()
 
