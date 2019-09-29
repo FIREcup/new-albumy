@@ -140,6 +140,22 @@ $(function () {
         });
     }
 
+    function update_notification_count() {
+        var $el = $('#notification-badge');
+        $.ajax({
+            type: 'GET',
+            url: $el.data('href'),
+            success: function (data) {
+                if (data.count === 0) {
+                    $('#notification-badge'.hide());
+                } else {
+                    $el.show();
+                    $el.text(data.count)
+                }
+            }
+        });
+    }
+
 
     $('.profile-popover').hover(show_profile_popover.bind(this), hide_profile_over.bind(this));
     $(document).on('click', '.follow-btn', follow.bind(this));
@@ -167,4 +183,8 @@ $(function () {
         $('#description-form').hide();
         $('#description').show();
     });
+
+    if (is_authenticated) {
+        setInterval(update_notification_count, 30000);
+    }
 });

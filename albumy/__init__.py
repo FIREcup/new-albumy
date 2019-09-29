@@ -8,7 +8,8 @@ from .blueprints.user import user_bp
 from .blueprints.ajax import ajax_bp
 from .extensions import bootstrap, db, mail, moment, login_manager, dropzone, csrf, avatars
 from .settings import config
-from .models import User, Role
+from .models import User, Role, Notification
+from flask_login import current_user
 
 
 def create_app(config_name=None):
@@ -54,7 +55,13 @@ def register_shell_context(app):
 
 
 def register_template_context(app):
-    pass
+    @app.context_processor
+    def make_template_context():
+        if current_user.is_authenticated:
+            notification_count = Notification.query.with_parent(current_user).filter_by(is_read=False).count()
+        else:
+            notification_count = None
+        return dict(notification_count=notification_count)
 
 
 def register_errorhandler(app):
