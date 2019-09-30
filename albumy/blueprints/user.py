@@ -7,7 +7,10 @@ from ..utils import redirect_back
 from ..notifications import push_follow_notification
 
 from ..models import User, Photo, Collect, Follow
-from ..forms.user import UploadAvatarForm, CropAvatarForm, EditProfileForm, ChangeEmailForm
+from ..forms.user import UploadAvatarForm, CropAvatarForm, EditProfileForm, ChangeEmailForm, ChangePasswordForm
+from ..forms.user import NotificationSettingForm
+from ..emails import send_confirm_email
+from ..utils import generate_token
 
 
 user_bp = Blueprint('user', __name__)
@@ -168,3 +171,21 @@ def change_email_request():
         flash('Confirm email sent, check your inbox', 'info')
         return redirect(url_for('.index', username=current_user.username))
     return render_template('user/settings/change_email.html', form=form)
+
+
+@user_bp.route('/settings/notification', methods=['GET', 'POST'])
+@login_required
+def notification_setting():
+    form = NotificationSettingForm()
+    if form.validate_on_submit():
+        current_user.receive_collect_notification = form.receive_collect_notification.data
+        current_user.receive_comment_notification = form.receive_comment_notification.data
+        current_user.receive_follow_notification = form.receive_follow_notification.data
+        db.session.commit()
+        flash('Notification settings updated.', 'success')
+        return redirect(url_for('.index', username=current_user.username))
+    form.receive_collect_notification = current_user.receive_collect_notification
+    form.receive_comment_notification = current_user.receive_comment_notification
+    form.receive_follow_notification = current_user.receive_follow_notification
+    return render_template('user/settings/edit_notification.html', form=form)
+
