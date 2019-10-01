@@ -8,7 +8,7 @@ from ..notifications import push_follow_notification
 
 from ..models import User, Photo, Collect, Follow
 from ..forms.user import UploadAvatarForm, CropAvatarForm, EditProfileForm, ChangeEmailForm, ChangePasswordForm
-from ..forms.user import NotificationSettingForm
+from ..forms.user import NotificationSettingForm, PrivacySettingForm, DeleteAccountForm
 from ..emails import send_confirm_email
 from ..utils import generate_token
 
@@ -89,7 +89,7 @@ def show_following(username):
 @login_required
 @confirm_required
 def change_avatar():
-    uplod_form = UploadAvatarForm()
+    upload_form = UploadAvatarForm()
     crop_form = CropAvatarForm()
     return render_template('user/settings/change_avatar.html', upload_form=upload_form, crop_form=crop_form)
 
@@ -159,6 +159,7 @@ def change_password():
         db.session.commit()
         flash('Password updated.', 'success')
         return redirect(url_for('.index', username=current_user.username))
+    return render_template('user/settings/change_password.html', form=form)
 
 
 @user_bp.route('/settings/change-email', methods=['GET', 'POST'])
@@ -189,3 +190,27 @@ def notification_setting():
     form.receive_follow_notification = current_user.receive_follow_notification
     return render_template('user/settings/edit_notification.html', form=form)
 
+
+@user_bp.route('/settings/privacy', methods=['GET', 'POST'])
+@login_required
+def privacy_setting():
+    form = PrivacySettingForm()
+    if form.validate_on_submit():
+        current_user.public_collections = form.public_collections.data
+        db.session.commit()
+        flash('Privacy settings updated.', 'success')
+        return redirect(url_for('.index', username=current_user.username))
+    form.public_collections.data = current_user.public_collections
+    return render_template('user/settings/edit_privacy.html', form=form)
+
+
+@user_bp.route('/settings/delete/account', methods=['GET', 'POST'])
+@fresh_login_required
+def delete_account():
+    form = DeleteAccountForm()
+    if form.validate_on_submit():
+        db.session.delete(current_user._get_current_object())
+        db.session.commit()
+        flash('You are free, goodbye!', 'success')
+        return redirect(url_for('main.index'))
+    return render_template('user/settings/delete_account.html', form=form)

@@ -30,10 +30,14 @@ class User(db.Model, UserMixin):
     avatar_m = db.Column(db.String(64))
     avatar_l = db.Column(db.String(64))
     avatar_raw = db.Column(db.String(64))
+    receive_collect_notification = db.Column(db.Boolean(), default=True)
+    receive_comment_notification = db.Column(db.Boolean(), default=True)
+    receive_follow_notification = db.Column(db.Boolean(), default=True)
 
     confirmed = db.Column(db.Boolean, default=False)
 
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    public_collections = db.Column(db.Boolean, default=True)
 
     role = db.relationship('Role', back_populates='users')
     photos = db.relationship('Photo', back_populates='author', cascade='all')
