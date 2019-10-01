@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, jsonify
 from flask_login import current_user
 
 
-from ..models import User
+from ..models import User, Notification
 
 ajax_bp = Blueprint('ajax', __name__)
 

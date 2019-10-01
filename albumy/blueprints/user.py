@@ -10,7 +10,7 @@ from ..models import User, Photo, Collect, Follow
 from ..forms.user import UploadAvatarForm, CropAvatarForm, EditProfileForm, ChangeEmailForm, ChangePasswordForm
 from ..forms.user import NotificationSettingForm, PrivacySettingForm, DeleteAccountForm
 from ..emails import send_confirm_email
-from ..utils import generate_token
+from ..utils import generate_token, flash_errors
 
 
 user_bp = Blueprint('user', __name__)
@@ -106,7 +106,7 @@ def upload_avatar():
         db.session.commit()
         flash('Image uploaded, please crop.', 'success')
     flash_errors(form)
-    return redirect(ulr_for('.change_avatar'))
+    return redirect(url_for('.change_avatar'))
 
 
 @user_bp.route('/settings/avatar/crop', methods=['POST'])
@@ -141,7 +141,7 @@ def edit_profile():
         current_user.location = form.location.data
         db.session.commit()
         flash('Profile updated.', 'success')
-        return redirect(url_for('.index', usename=current_user.username))
+        return redirect(url_for('.index', username=current_user.username))
     form.name.data = current_user.name
     form.username.data = current_user.username
     form.bio.data = current_user.bio
