@@ -5,7 +5,7 @@ from flask_dropzone import random_filename
 
 from ..decorators import permission_required, confirm_required
 from ..extensions import db
-from ..models import Photo, Role, User, Tag, Comment, Collect, Notification
+from ..models import Photo, Role, User, Tag, Comment, Collect, Notification, Follow
 from ..utils import resize_image, flash_errors
 from ..forms.main import DescriptionForm, TagForm, CommentForm
 from sqlalchemy.sql.expression import func
@@ -21,7 +21,7 @@ def index():
         page = request.args.get('page', 1, type=int)
         per_page = current_app.config['ALBUMY_PHOTO_PER_PAGE']
         pagination = Photo.query\
-                .join(Follow, Follow.folloed_id=Photo.author_id)\
+                .join(Follow, Follow.followed_id==Photo.author_id)\
                 .filter(Follow.follower_id == current_user.id)\
                 .order_by(Photo.timestamp.desc())\
                 .paginate(page, per_page)

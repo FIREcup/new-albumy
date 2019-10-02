@@ -243,5 +243,5 @@ def delete_avatars(**kwargs):
     for filename in [target.avatar_s, target.avatar_m, target.avatar_l, target.avatar_raw]:
         if filename is not None:
             path = os.path.join(current_app.config['AVATARS_SAVE_PATH'], filename)
-            if os.path.exists(path)
+            if os.path.exists(path):
                 os.remove(path)
