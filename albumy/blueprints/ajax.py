@@ -57,3 +57,23 @@ def notifications_count():
 
     count = Notification.query.with_parent(current_user).filter_by(is_read=False).count()
     return jsonify(count=count)
+
+
+@ajax_bp.route('/<int:photo_id>/followers-count')
+def collectors_count(photo_id):
+    photo = Photo.query.get_or_404(photo_id)
+    count = len(photo.collectors)
+    return jsonify(count=count)
+
+
+@ajax_bp.route('/uncollect/<int:photo_id>', methods=['POST'])
+def uncollect(photo_id):
+    if not current_user.is_authenticated:
+        return jsonify(message='Login required.'), 403
+
+    photo = Photo.query.get_or_404(photo_id)
+    if not current_user.is_collecting(photo):
+        return jsonify(message='Not collect yet.'), 400
+
+    current_user.uncollect(photo)
+    return jsonify(message='Collect canceled.')
