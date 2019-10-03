@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from .extensions import db
 from flask_avatars import Identicon
 from werkzeug.security import generate_password_hash, check_password_hash
+from .extensions import whooshee
 
 
 class Follow(db.Model):
@@ -16,6 +17,7 @@ class Follow(db.Model):
     followed = db.relationship('User', foreign_keys=[followed_id], back_populates='followers', lazy='joined')
 
 
+@whooshee.register_model('name', 'username')
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, index=True)
@@ -169,6 +171,7 @@ class Role(db.Model):
         db.session.commit()
 
 
+@whooshee.register_model('description')
 class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(500))
@@ -202,6 +205,7 @@ class Comment(db.Model):
     replied = db.relationship('Comment', back_populates='replies', remote_side=[id])
 
 
+@whooshee.register_model('name')
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)

@@ -7,6 +7,7 @@ from .blueprints.auth import auth_bp
 from .blueprints.user import user_bp
 from .blueprints.ajax import ajax_bp
 from .extensions import bootstrap, db, mail, moment, login_manager, dropzone, csrf, avatars
+from .extensions import whooshee
 from .settings import config
 from .models import User, Role, Notification
 from flask_login import current_user
@@ -39,6 +40,7 @@ def register_extensions(app):
     dropzone.init_app(app)
     csrf.init_app(app)
     avatars.init_app(app)
+    whooshee.init_app(app)
 
 
 def register_blueprints(app):

@@ -77,3 +77,15 @@ def uncollect(photo_id):
 
     current_user.uncollect(photo)
     return jsonify(message='Collect canceled.')
+
+
+@ajax_bp.route('/collect/<int:photo_id>', methods=['POST'])
+def collect(photo_id):
+    if not current_user.is_authenticated:
+        return jsonify(message='Login required'), 403
+    if not current_user.confirmed:
+        return jsonify(message='Confirm account required.'), 400
+    if not current_user.can('COLLECT'):
+        return jsonify(message='No permission.'), 403
+
+    photo = Photo.query.get_or_404(photo_id)
