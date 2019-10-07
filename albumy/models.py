@@ -32,9 +32,11 @@ class User(db.Model, UserMixin):
     avatar_m = db.Column(db.String(64))
     avatar_l = db.Column(db.String(64))
     avatar_raw = db.Column(db.String(64))
-    receive_collect_notification = db.Column(db.Boolean(), default=True)
-    receive_comment_notification = db.Column(db.Boolean(), default=True)
-    receive_follow_notification = db.Column(db.Boolean(), default=True)
+    receive_collect_notification = db.Column(db.Boolean, default=True)
+    receive_comment_notification = db.Column(db.Boolean, default=True)
+    receive_follow_notification = db.Column(db.Boolean, default=True)
+    locked = db.Column(db.Boolean, default=False)
+    active = db.Column(db.Boolean, default=True)
 
     confirmed = db.Column(db.Boolean, default=False)
 
@@ -121,6 +123,28 @@ class User(db.Model, UserMixin):
 
     def is_followed_by(self, user):
         return self.followers.filter_by(follower_id=user.id).first() is not None
+
+    def lock(self):
+        self.locked = True
+        self.role = Role.query.filter_by(name='Locked').first()
+        db.session.commit()
+
+    def unlock(self):
+        self.locked = False
+        self.role = Role.query.filter_by(name='User').first()
+        db.session.commit()
+
+    @property
+    def is_active(self):
+        return self.active
+
+    def block(self):
+        self.active = False
+        db.session.commit()
+
+    def unblock(self):
+        self.active = True
+        db.session.commit()
 
 
 roles_permissions = db.Table('roles_permissions',
