@@ -41,9 +41,17 @@
                         </form>
                     {% endif %}
                 {% endif %}
+                {% if current_user.is_admin %}
+                    <a class="btn btn-warning btn-sm" href="{{ url_for('admin.edit_profile_admin', user_id=user.id) }}">
+                        Edit profile
+                    </a>
+                {% endif %}
             {% endif %}
             <div class="float-right">
                 {{ follow_area(user) }}
+                {% if current_user.is_authenticated and user == current_user %}
+                    <a class="btn btn-outline-primary btn-sm" href="{{ url_for('.edit_profile') }}">Edit profile</a>
+                {% endif %}
             </div>
         </div>
     </div>
