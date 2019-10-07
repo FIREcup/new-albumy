@@ -147,7 +147,7 @@ $(function () {
             url: $el.data('href'),
             success: function (data) {
                 if (data.count === 0) {
-                    $('#notification-badge'.hide());
+                    $('#notification-badge').hide();
                 } else {
                     $el.show();
                     $el.text(data.count)
