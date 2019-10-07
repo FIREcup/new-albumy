@@ -83,7 +83,7 @@ class User(db.Model, UserMixin):
 
     @property
     def is_admin(self):
-        return self.roles.name == 'Administrator'
+        return self.role.name == 'Administrator'
 
     def can(self, permission):
         permission = Permission.query.filter_by(name=permission).first()
