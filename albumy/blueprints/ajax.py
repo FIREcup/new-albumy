@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, jsonify
 from flask_login import current_user
 
 
-from ..models import User, Notification
+from ..models import User, Notification, Photo
+from ..notifications import push_collect_notification
 
 ajax_bp = Blueprint('ajax', __name__)
 
@@ -89,3 +90,11 @@ def collect(photo_id):
         return jsonify(message='No permission.'), 403
 
     photo = Photo.query.get_or_404(photo_id)
+    if current_user.is_collecting(photo):
+        return jsonify(message='Already collected.'), 400
+
+    current_user.collect(photo)
+    if current_user != photo.author and photo.author.receive_collect_notification:
+        push_collect_notification(collector=current_user, photo_id=photo_id, receiver=photo.author)
+    return jsonify(message='Photo collected.')
+
