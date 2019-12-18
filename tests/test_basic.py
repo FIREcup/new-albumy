@@ -1,6 +1,6 @@
 from flask import current_app
 
-from tests.base import BaseTestCase
+from base import BaseTestCase
 
 
 class BasicTestCase(BaseTestCase):
@@ -8,10 +8,12 @@ class BasicTestCase(BaseTestCase):
         self.assertFalse(current_app is None)
 
     def test_app_is_testing(self):
-        self.assertTrue(current_app.config['TESTING'])
+        self.assertTrue(current_app.config['PRODUCTION'])
 
     def test_404_error(self):
         response = self.client.get('/foo')
         data = response.get_data(as_text=True)
         self.assertEqual(response.status_code, 404)
         self.assertIn('404 Error', data)
+
+

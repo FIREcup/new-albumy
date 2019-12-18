@@ -1,4 +1,7 @@
 import unittest
+import sys
+
+sys.path.append("/home/jackyang/new-albumy/")
 
 from flask import url_for
 
