@@ -54,7 +54,7 @@ class BaseConfig:
 
 
 class DevelopmentConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://python:123@localhost:3306/albumy'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://jackyang:Yt980215@jackyang.mysql.pythonanywhere-services.com:3306/albumy'
     REIDS_URL = 'redis://localhost'
 
 
@@ -65,7 +65,7 @@ class TestingConfig(BaseConfig):
 
 
 class ProductionConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI', 'sqlite:////' + os.path.join(basedir, 'data.db'))
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI')
 
 
 config = {
