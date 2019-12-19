@@ -16,3 +16,8 @@ class TagForm(FlaskForm):
 class CommentForm(FlaskForm):
     body = TextAreaField('', validators=[DataRequired()])
     submit = SubmitField()
+
+
+class TagForm(FlaskForm):
+    tag = TextAreaField('Tag', validators=[Optional(), Length(0, 300)], render_kw={'placeholder':'separate by space or comma'})
+    submit = SubmitField()

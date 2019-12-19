@@ -54,7 +54,7 @@ class BaseConfig:
 
 
 class DevelopmentConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://jackyang:Yt980215@localhost:3306/jackyang$albumy'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://python:123@localhost:3306/albumy'
     REIDS_URL = 'redis://localhost'
 
 

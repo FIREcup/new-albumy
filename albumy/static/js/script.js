@@ -184,6 +184,16 @@ $(function () {
         $('#description').show();
     });
 
+    $('#tag-btn').click(function() {
+        $('#tags').hide();
+        $('#tag-form').show();
+    });
+
+    $('#cancel-tag').click(function() {
+        $('#tag-form').hide();
+        $('#tags').show();
+    });
+
     if (is_authenticated) {
         setInterval(update_notification_count, 30000);
     }
