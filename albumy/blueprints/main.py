@@ -242,7 +242,7 @@ def new_comment(photo_id):
 @main_bp.route('/photo/p/<int:photo_id>')
 def photo_previous(photo_id):
     photo = Photo.query.get_or_404(photo_id)
-    photo_p = Photo.query.with_parent(photo.author).filter(Photo.id > photo.id).order_by(Photo.id.asc()).first()
+    photo_p = Photo.query.with_parent(photo.author).filter(Photo.id < photo.id).order_by(Photo.id.asc()).first()
 
     if photo_p is None:
         flash('This is already the first one.', 'info')

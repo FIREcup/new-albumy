@@ -293,3 +293,7 @@ footer {
     left: 50%;
     bottom: 30px;
 }
+
+div.modal-content {
+    text-align: center;
+}

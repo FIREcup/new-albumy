@@ -156,6 +156,26 @@ $(function () {
         });
     }
 
+    var url = "https://www.baidu.com/";
+
+    function generate_qrcode() {
+        $('#qrcode').qrcode({
+            width: 140,
+            height: 140,
+            render: 'canvas',
+            typenumber: -1,
+            correctLevel: 0,
+            background: '#ffffff',
+            foreground: '#000000',
+            text: url});
+    };
+
+    function clear_qrcode() {
+        $('#qrcode').empty();
+    };
+
+    $('#weixin_logo').on('click', generate_qrcode.bind(this));
+    $('#share-modal').on('hide.bs.modal', clear_qrcode.bind(this));
 
     $('.profile-popover').hover(show_profile_popover.bind(this), hide_profile_over.bind(this));
     $(document).on('click', '.follow-btn', follow.bind(this));
