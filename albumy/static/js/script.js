@@ -156,8 +156,6 @@ $(function () {
         });
     }
 
-    var url = "https://www.baidu.com/";
-
     function generate_qrcode() {
         $('#qrcode').qrcode({
             width: 140,
