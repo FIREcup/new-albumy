@@ -9,30 +9,60 @@ import requests
 
 oauth_bp = Blueprint('oauth', __name__)
 
-oauth.register(
+github = oauth.remote_app(
     name='github',
-    client_id=os.getenv('GITHUB_CLIENT_ID'),
-    client_secret=os.getenv('GITHUB_CLIENT_SECRET'),
+    consumer_key=os.getenv('GITHUB_CLIENT_ID'),
+    consumer_secret=os.getenv('GITHUB_CLIENT_SECRET'),
+    request_token_params={'scope': 'user'},
+    base_url='https://api.github.com/',
+    request_token_url=None,
+    access_token_method='POST',
     access_token_url='https://github.com/login/oauth/access_token',
-    access_token_params=None,
     authorize_url='https://github.com/login/oauth/authorize',
-    authorize_params=None,
-    api_base_url='https://api.github.com/',
-    client_kwargs="profile"
 )
 
-github = oauth.github
+providers = {'github': github}
 
-@oauth_bp.route('/login/github')
-def oauth_login():
-    redirect_url = url_for('.oauth_callback', _external=True)
-    return github.authorize_redirect(request, redirect_url)
+def get_social_profile(provider, access_token):
+    response = provider.get('user', token=access_token)
+    
+    username = response.data.get('name')
+    website = response.data.get('blog')
+    github = response.data.get('html_url')
+    email = response.data.get('email')
+    bio = response.data.get('bio')
+    return username,  website, github, email, bio
 
-@oauth_bp.route('/callback/github')
-def oauth_callback():
-    token = oauth.github.authorize_access_token(request)
-    print(token)
-    resp = oauth.github.get('profile')
-    profile = resp.json()
-    print(profile)
-    return profile
+
+@oauth_bp.route('/login/<provider_name>')
+def oauth_login(provider_name):
+    callback = url_for('.oauth_callback', provider_name=provider_name, _external=True)
+    return providers[provider_name].authorize(callback=callback)
+
+
+@oauth_bp.route('/callback/<provider_name>')
+def oauth_callback(provider_name):
+    provider  = providers[provider_name]
+    response = provider.authorized_response()
+
+    if response is not None:
+        access_token = response.get('access_token')
+    else:
+        access_token = None
+
+    if access_token is None:
+        flash('Access denied, please try again.')
+        return redirect(url_for('auth.login'))
+
+    username, website, github, email, bio = get_social_profile(provider, access_token)
+
+    user = User.query.filter_by(email=email).first()
+
+    if user is None:
+        user = User(email=email, nickname=username, github=github)
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        return redirect(url_for('main.index'))
+    login_user(user, remember=True)
+    return redirect(url_for('main.index'))

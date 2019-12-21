@@ -20,7 +20,7 @@
                         <p class="small"><a href="{{ url_for('.forget_password') }}">Forget Password</a></p>
                         <hr>
                         <p class="small">Or sign in with github</p>
-                        <a class='icon' href="{{ url_for('oauth.oauth_login') }}">
+                        <a class='icon' href="{{ url_for('oauth.oauth_login', provider_name='github') }}">
                             <img src="{{ url_for('static', filename='images/github.png') }}" alt="github icon" title='login with github'>
                         </a>
                     </div>

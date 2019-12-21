@@ -6,6 +6,7 @@ from ..forms.auth import LoginForm, RegisterForm, ForgetPasswordForm, ResetPassw
 from ..models import User
 from ..settings import Operations
 from ..utils import generate_token, validate_token, redirect_back
+import os
 
 
 auth_bp = Blueprint('auth', __name__)
@@ -77,10 +78,12 @@ def confirm(token):
 @auth_bp.route('/resend-confirm-email')
 @login_required
 def resend_confirm_email():
+    print("haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     if current_user.confirmed:
         return redirect(url_for('main.index'))
 
     token = generate_token(user=current_user, operation=Operations.CONFIRM)
+    print("{} {} {}".format(os.getenv('MAIL_SERVER'), os.getenv('MAIL_USERNAME'), os.getenv('MAIL_PASSWORD')))
     send_confirm_email(user=current_user, token=token)
     flash('New email sent, check your inbox', 'info')
     return redirect(url_for('main.index'))

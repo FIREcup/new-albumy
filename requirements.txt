@@ -18,6 +18,7 @@ Flask-SQLAlchemy==2.4.0
 flask-whooshee==0.7.0
 Flask-WTF==0.14.2
 idna==2.8
+incremental==17.5.0
 itsdangerous==1.1.0
 Jinja2==2.10.1
 Mako==1.1.0

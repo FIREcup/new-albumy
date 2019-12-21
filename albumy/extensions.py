@@ -9,7 +9,7 @@ from flask_wtf import CSRFProtect
 from flask_avatars import Avatars
 from flask_whooshee import Whooshee
 from flask_migrate import Migrate
-from authlib.integrations.flask_client import OAuth
+from flask_oauthlib.client import OAuth
 
 
 bootstrap = Bootstrap()
