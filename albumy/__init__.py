@@ -6,9 +6,10 @@ from .blueprints.main import main_bp
 from .blueprints.auth import auth_bp
 from .blueprints.user import user_bp
 from .blueprints.ajax import ajax_bp
+from .blueprints.oauth import oauth_bp
 from .blueprints.admin import admin_bp
 from .extensions import bootstrap, db, mail, moment, login_manager, dropzone, csrf, avatars
-from .extensions import whooshee, migrate
+from .extensions import whooshee, migrate, oauth
 from .settings import config
 from .models import User, Role, Notification
 from flask_login import current_user
@@ -43,6 +44,7 @@ def register_extensions(app):
     avatars.init_app(app)
     whooshee.init_app(app)
     migrate.init_app(app)
+    oauth.init_app(app)
 
 
 def register_blueprints(app):
@@ -51,6 +53,7 @@ def register_blueprints(app):
     app.register_blueprint(user_bp, url_prefix='/user')
     app.register_blueprint(ajax_bp, url_prefix='/ajax')
     app.register_blueprint(admin_bp, url_prefix='/admin')
+    app.register_blueprint(oauth_bp)
 
 
 def register_shell_context(app):

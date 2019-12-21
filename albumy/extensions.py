@@ -9,6 +9,7 @@ from flask_wtf import CSRFProtect
 from flask_avatars import Avatars
 from flask_whooshee import Whooshee
 from flask_migrate import Migrate
+from authlib.integrations.flask_client import OAuth
 
 
 bootstrap = Bootstrap()
@@ -21,6 +22,7 @@ csrf = CSRFProtect()
 avatars = Avatars()
 whooshee = Whooshee()
 migrate = Migrate(db)
+oauth = OAuth()
 
 
 @login_manager.user_loader
