@@ -52,6 +52,9 @@ class BaseConfig:
     DROPZONE_MAX_FILES = 30
     DROPZONE_ENABLE_CSRF = True
 
+    CELERY_BROKER_URL = os.getenv('BROKER_URI')
+    CELERY_RESULT_BACKEND = os.getenv('RESULT_BACKEND')
+
 
 class DevelopmentConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://python:123456@localhost:3306/albumy'

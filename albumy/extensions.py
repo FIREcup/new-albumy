@@ -1,3 +1,4 @@
+import os
 from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_moment import Moment
@@ -10,6 +11,7 @@ from flask_avatars import Avatars
 from flask_whooshee import Whooshee
 from flask_migrate import Migrate
 from flask_oauthlib.client import OAuth
+from celery import Celery
 
 
 bootstrap = Bootstrap()
@@ -23,6 +25,7 @@ avatars = Avatars()
 whooshee = Whooshee()
 migrate = Migrate(db)
 oauth = OAuth()
+celery = Celery(__name__, broker=os.getenv('BROKER_URI'))
 
 
 @login_manager.user_loader

@@ -2,8 +2,10 @@ from threading import Thread
 from flask import current_app, render_template
 from flask_mail import Message
 from .extensions import mail
+from .extensions import celery
 
 
+@celery.task
 def _send_async_mail(app, message):
     with app.app_context():
         mail.send(message)
@@ -14,9 +16,7 @@ def send_mail(to, subject, template, **kwargs):
     message.body = render_template(template + '.txt', **kwargs)
     message.html = render_template(template + '.html', **kwargs)
     app = current_app._get_current_object()
-    thr = Thread(target=_send_async_mail, args=[app, message])
-    thr.start()
-    return thr
+    _send_async_mail(app, message)
 
 
 def send_confirm_email(user, token, to=None):

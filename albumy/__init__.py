@@ -1,6 +1,7 @@
 import os
 import click
 from flask import Flask, render_template
+from celery import Celery
 
 from .blueprints.main import main_bp
 from .blueprints.auth import auth_bp
@@ -22,6 +23,9 @@ def create_app(config_name=None):
     app = Flask('albumy')
 
     app.config.from_object(config[config_name])
+
+    celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
 
     register_extensions(app)
     register_blueprints(app)
