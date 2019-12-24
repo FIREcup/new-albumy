@@ -2,10 +2,12 @@ import unittest
 import sys
 import os
 
-sys.path.append("/home/shiyanlou/Code/new-albumy")
+appdir = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(os.path.dirname(appdir))
 
 from dotenv import load_dotenv
-load_dotenv("/home/shiyanlou/Code/new-albumy/.env")
+envdir = os.path.join(os.path.dirname(appdir), '.env')
+load_dotenv(envdir)
 
 from flask import url_for
 
