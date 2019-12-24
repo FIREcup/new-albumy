@@ -61,7 +61,7 @@ class DevelopmentConfig(BaseConfig):
 class TestingConfig(BaseConfig):
     TESTING = True
     WTF_CSRF_ENABLED = False
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://python:123456@localhost:3306/albumy_test'
 
 
 class ProductionConfig(BaseConfig):

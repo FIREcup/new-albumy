@@ -8,7 +8,7 @@ class BasicTestCase(BaseTestCase):
         self.assertFalse(current_app is None)
 
     def test_app_is_testing(self):
-        self.assertTrue(current_app.config['PRODUCTION'])
+        self.assertTrue(current_app.config['TESTING'])
 
     def test_404_error(self):
         response = self.client.get('/foo')

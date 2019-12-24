@@ -1,8 +1,8 @@
 from flask import url_for
 
+from base import BaseTestCase
 from albumy.extensions import db
 from albumy.models import User, Photo, Comment, Notification, Tag
-from tests.base import BaseTestCase
 
 
 class MainTestCase(BaseTestCase):

@@ -1,6 +1,6 @@
+from base import BaseTestCase
 from albumy.extensions import db
 from albumy.models import Comment, Role, User, Photo, Tag
-from tests.base import BaseTestCase
 
 
 class CLITestCase(BaseTestCase):

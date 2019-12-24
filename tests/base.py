@@ -1,7 +1,11 @@
 import unittest
 import sys
+import os
 
-sys.path.append("/home/jackyang/new-albumy/")
+sys.path.append("/home/shiyanlou/Code/new-albumy")
+
+from dotenv import load_dotenv
+load_dotenv("/home/shiyanlou/Code/new-albumy/.env")
 
 from flask import url_for
 
@@ -10,8 +14,9 @@ from albumy.extensions import db
 from albumy.models import User, Role, Photo, Comment, Tag
 
 
+
 class BaseTestCase(unittest.TestCase):
-    def setup(self):
+    def setUp(self):
         app = create_app('testing')
         self.context = app.test_request_context()
         self.context.push()
@@ -21,9 +26,10 @@ class BaseTestCase(unittest.TestCase):
         db.create_all()
         Role.init_role()
 
+
         admin_user = User(email='admin@helloflask.com', name='Admin', username='admin', confirmed=True)
         admin_user.set_password('123')
-        normal_user = User(email='normal@helloflask.com', name='Normal User', username='normal', cofirmed=True)
+        normal_user = User(email='normal@helloflask.com', name='Normal User', username='normal', confirmed=True)
         normal_user.set_password('123')
         unconfirmed_user = User(email='unconfirmed@helloflask.com', name='unconfirmed', username='unconfirmed', confirmed=False)
         unconfirmed_user.set_password('123')

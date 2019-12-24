@@ -1,9 +1,9 @@
 from flask import url_for
 
+from base import BaseTestCase
 from albumy.models import User
 from albumy.settings import Operations
 from albumy.utils import generate_token
-from tests.base import BaseTestCase
 
 
 class AuthTestCase(BaseTestCase):

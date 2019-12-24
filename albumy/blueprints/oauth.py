@@ -25,7 +25,7 @@ providers = {'github': github}
 
 def get_social_profile(provider, access_token):
     response = provider.get('user', token=access_token)
-    
+
     username = response.data.get('name')
     website = response.data.get('blog')
     github = response.data.get('html_url')
